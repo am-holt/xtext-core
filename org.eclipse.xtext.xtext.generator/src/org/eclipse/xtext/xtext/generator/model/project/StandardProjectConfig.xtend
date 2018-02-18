@@ -79,6 +79,10 @@ class StandardProjectConfig extends XtextProjectConfig {
 				if (assetsPath === null)
 					assets = computeAssets
 			}
+			if (it instanceof PeWebProjectConfig) {
+				if (assetsPath === null)
+					assets = computeAssets
+			}
 		]
 	}
 
@@ -91,6 +95,7 @@ class StandardProjectConfig extends XtextProjectConfig {
 			case eclipsePluginTest: if (!mavenLayout) baseName + '.ui.tests' else baseName + '.ui'
 			case ideaPlugin: baseName + '.idea'
 			case web: baseName + '.web'
+			case peWeb: baseName + '.peWeb'
 		}
 	}
 
@@ -124,6 +129,10 @@ class StandardProjectConfig extends XtextProjectConfig {
 	}
 
 	protected def computeAssets(WebProjectConfig project) {
+		project.rootPath + '/' + if(mavenLayout) 'src/' + project.computeSourceSet + '/webapp' else 'WebRoot'
+	}
+	
+	protected def computeAssets(PeWebProjectConfig project) {
 		project.rootPath + '/' + if(mavenLayout) 'src/' + project.computeSourceSet + '/webapp' else 'WebRoot'
 	}
 

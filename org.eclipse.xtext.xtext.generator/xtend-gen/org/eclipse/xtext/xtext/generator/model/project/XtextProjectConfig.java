@@ -28,6 +28,7 @@ import org.eclipse.xtext.xtext.generator.model.PluginXmlAccess;
 import org.eclipse.xtext.xtext.generator.model.XtextGeneratorFileSystemAccess;
 import org.eclipse.xtext.xtext.generator.model.project.BundleProjectConfig;
 import org.eclipse.xtext.xtext.generator.model.project.IXtextProjectConfig;
+import org.eclipse.xtext.xtext.generator.model.project.PeWebProjectConfig;
 import org.eclipse.xtext.xtext.generator.model.project.RuntimeProjectConfig;
 import org.eclipse.xtext.xtext.generator.model.project.SubProjectConfig;
 import org.eclipse.xtext.xtext.generator.model.project.WebProjectConfig;
@@ -55,6 +56,8 @@ public class XtextProjectConfig implements IXtextProjectConfig {
   
   private WebProjectConfig web = new WebProjectConfig();
   
+  private PeWebProjectConfig peWeb = new PeWebProjectConfig();
+  
   @Inject
   private CodeConfig codeConfig;
   
@@ -69,7 +72,7 @@ public class XtextProjectConfig implements IXtextProjectConfig {
     ArrayList<SubProjectConfig> _xblockexpression = null;
     {
       final ArrayList<SubProjectConfig> allProjects = CollectionLiterals.<SubProjectConfig>newArrayList();
-      Iterables.<SubProjectConfig>addAll(allProjects, Collections.<SubProjectConfig>unmodifiableList(CollectionLiterals.<SubProjectConfig>newArrayList(this.runtime, this.runtimeTest, this.genericIde, this.eclipsePlugin, this.eclipsePluginTest, this.ideaPlugin, this.web)));
+      Iterables.<SubProjectConfig>addAll(allProjects, Collections.<SubProjectConfig>unmodifiableList(CollectionLiterals.<SubProjectConfig>newArrayList(this.runtime, this.runtimeTest, this.genericIde, this.eclipsePlugin, this.eclipsePluginTest, this.ideaPlugin, this.web, this.peWeb)));
       _xblockexpression = allProjects;
     }
     return _xblockexpression;
@@ -116,7 +119,7 @@ public class XtextProjectConfig implements IXtextProjectConfig {
     final Function1<SubProjectConfig, Boolean> _function = (SubProjectConfig it) -> {
       return Boolean.valueOf(it.isEnabled());
     };
-    boolean _exists = IterableExtensions.exists(Collections.<SubProjectConfig>unmodifiableList(CollectionLiterals.<SubProjectConfig>newArrayList(this.eclipsePlugin, this.ideaPlugin, this.web)), _function);
+    boolean _exists = IterableExtensions.exists(Collections.<SubProjectConfig>unmodifiableList(CollectionLiterals.<SubProjectConfig>newArrayList(this.eclipsePlugin, this.ideaPlugin, this.web, this.peWeb)), _function);
     if (_exists) {
       this.genericIde.setEnabled(true);
     }
@@ -199,6 +202,15 @@ public class XtextProjectConfig implements IXtextProjectConfig {
   
   public void setWeb(final WebProjectConfig web) {
     this.web = web;
+  }
+  
+  @Pure
+  public PeWebProjectConfig getPeWeb() {
+    return this.peWeb;
+  }
+  
+  public void setPeWeb(final PeWebProjectConfig peWeb) {
+    this.peWeb = peWeb;
   }
   
   @Pure

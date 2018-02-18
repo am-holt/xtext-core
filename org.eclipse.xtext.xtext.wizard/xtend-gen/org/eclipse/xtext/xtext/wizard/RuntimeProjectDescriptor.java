@@ -430,6 +430,21 @@ public class RuntimeProjectDescriptor extends TestedProjectDescriptor {
       }
     }
     {
+      boolean _isEnabled_5 = this.getConfig().getPeWebProject().isEnabled();
+      if (_isEnabled_5) {
+        _builder.append("\t\t\t\t");
+        _builder.append("peWeb = {");
+        _builder.newLine();
+        _builder.append("\t\t\t\t");
+        _builder.append("\t");
+        _builder.append("enabled = true");
+        _builder.newLine();
+        _builder.append("\t\t\t\t");
+        _builder.append("}");
+        _builder.newLine();
+      }
+    }
+    {
       SourceLayout _sourceLayout = this.getConfig().getSourceLayout();
       boolean _equals = Objects.equal(_sourceLayout, SourceLayout.MAVEN);
       if (_equals) {

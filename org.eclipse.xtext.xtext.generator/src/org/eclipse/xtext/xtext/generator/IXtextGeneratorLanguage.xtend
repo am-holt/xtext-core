@@ -36,6 +36,8 @@ interface IXtextGeneratorLanguage {
 	
 	def GuiceModuleAccess getWebGenModule()
 	
+	def GuiceModuleAccess getPeWebGenModule()
+	
 	def ResourceSet getResourceSet()
 	
 	/**

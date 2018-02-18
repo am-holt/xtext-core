@@ -29,6 +29,7 @@ import org.eclipse.xtext.xtext.wizard.LanguageDescriptor;
 import org.eclipse.xtext.xtext.wizard.LanguageServer;
 import org.eclipse.xtext.xtext.wizard.P2RepositoryProject;
 import org.eclipse.xtext.xtext.wizard.ParentProjectDescriptor;
+import org.eclipse.xtext.xtext.wizard.PeWebProjectDescriptor;
 import org.eclipse.xtext.xtext.wizard.ProjectDescriptor;
 import org.eclipse.xtext.xtext.wizard.ProjectLayout;
 import org.eclipse.xtext.xtext.wizard.RuntimeProjectDescriptor;
@@ -79,6 +80,8 @@ public class WizardConfiguration {
   
   private final WebProjectDescriptor webProject = new WebProjectDescriptor(this);
   
+  private final PeWebProjectDescriptor peWebProject = new PeWebProjectDescriptor(this);
+  
   private final ParentProjectDescriptor parentProject = new ParentProjectDescriptor(this);
   
   private final TargetPlatformProject targetPlatformProject = new TargetPlatformProject(this);
@@ -93,7 +96,7 @@ public class WizardConfiguration {
       final Function1<ProjectDescriptor, Boolean> _function = (ProjectDescriptor it) -> {
         return Boolean.valueOf(it.isEnabled());
       };
-      final Iterable<? extends ProjectDescriptor> productionProjects = IterableExtensions.filter(Collections.<ProjectDescriptor>unmodifiableList(CollectionLiterals.<ProjectDescriptor>newArrayList(this.parentProject, this.runtimeProject, this.ideProject, this.uiProject, this.intellijProject, this.webProject, this.targetPlatformProject, this.sdkProject, this.p2Project)), _function);
+      final Iterable<? extends ProjectDescriptor> productionProjects = IterableExtensions.filter(Collections.<ProjectDescriptor>unmodifiableList(CollectionLiterals.<ProjectDescriptor>newArrayList(this.parentProject, this.runtimeProject, this.ideProject, this.uiProject, this.intellijProject, this.webProject, this.peWebProject, this.targetPlatformProject, this.sdkProject, this.p2Project)), _function);
       final Function1<TestedProjectDescriptor, TestProjectDescriptor> _function_1 = (TestedProjectDescriptor it) -> {
         return it.getTestProject();
       };
@@ -250,6 +253,11 @@ public class WizardConfiguration {
   @Pure
   public WebProjectDescriptor getWebProject() {
     return this.webProject;
+  }
+  
+  @Pure
+  public PeWebProjectDescriptor getPeWebProject() {
+    return this.peWebProject;
   }
   
   @Pure

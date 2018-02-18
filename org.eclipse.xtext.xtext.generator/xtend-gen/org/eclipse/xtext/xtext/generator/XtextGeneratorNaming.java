@@ -207,7 +207,7 @@ public class XtextGeneratorNaming {
   
   public String getWebBasePackage(final Grammar grammar) {
     String _namespace = GrammarUtil.getNamespace(grammar);
-    return (_namespace + ".web");
+    return (_namespace + ".peWeb");
   }
   
   public TypeReference getWebModule(final Grammar grammar) {

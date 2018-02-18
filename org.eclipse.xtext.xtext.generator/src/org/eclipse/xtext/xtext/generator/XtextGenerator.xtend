@@ -162,13 +162,14 @@ class XtextGenerator extends AbstractWorkflowComponent2 {
 		initialize
 		try {
 			cleaner.clean
+			
 			for (language : languageConfigs) {
 				try {
 					LOG.info('Generating ' + language.grammar.name)
 					language.generate
-					language.generateSetups
-					language.generateModules
-					language.generateExecutableExtensionFactory
+					//language.generateSetups
+				//	language.generateModules
+				//	language.generateExecutableExtensionFactory
 				} catch(Exception e) {
 					handleException(e, issues)
 				}
@@ -178,6 +179,7 @@ class XtextGenerator extends AbstractWorkflowComponent2 {
 			generateManifests
 			generateActivator
 			generateServices
+			
 		} catch (Exception e) {
 			handleException(e, issues)
 		}

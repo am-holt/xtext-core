@@ -228,9 +228,6 @@ public class XtextGenerator extends AbstractWorkflowComponent2 {
           String _plus = ("Generating " + _name);
           XtextGenerator.LOG.info(_plus);
           language.generate();
-          this.generateSetups(language);
-          this.generateModules(language);
-          this.generateExecutableExtensionFactory(language);
         } catch (final Throwable _t) {
           if (_t instanceof Exception) {
             final Exception e = (Exception)_t;

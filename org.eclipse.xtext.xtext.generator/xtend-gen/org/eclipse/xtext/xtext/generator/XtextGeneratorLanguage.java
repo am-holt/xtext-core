@@ -119,6 +119,9 @@ public class XtextGeneratorLanguage extends CompositeGeneratorFragment2 implemen
   @Accessors
   private final GuiceModuleAccess webGenModule = new GuiceModuleAccess();
   
+  @Accessors
+  private final GuiceModuleAccess peWebGenModule = new GuiceModuleAccess();
+  
   @Inject
   private Provider<ResourceSet> resourceSetProvider;
   
@@ -455,5 +458,10 @@ public class XtextGeneratorLanguage extends CompositeGeneratorFragment2 implemen
   @Pure
   public GuiceModuleAccess getWebGenModule() {
     return this.webGenModule;
+  }
+  
+  @Pure
+  public GuiceModuleAccess getPeWebGenModule() {
+    return this.peWebGenModule;
   }
 }

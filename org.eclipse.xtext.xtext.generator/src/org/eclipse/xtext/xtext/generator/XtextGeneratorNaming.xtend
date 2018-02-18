@@ -152,7 +152,7 @@ class XtextGeneratorNaming {
 	}
 	
 	def getWebBasePackage(Grammar grammar) {
-		return getNamespace(grammar) + ".web"
+		return getNamespace(grammar) + ".peWeb"
 	}
 	
 	def getWebModule(Grammar grammar) {

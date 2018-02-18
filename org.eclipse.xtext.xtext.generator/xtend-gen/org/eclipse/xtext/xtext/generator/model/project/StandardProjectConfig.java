@@ -16,6 +16,7 @@ import org.eclipse.xtext.xtext.generator.Issues;
 import org.eclipse.xtext.xtext.generator.model.ManifestAccess;
 import org.eclipse.xtext.xtext.generator.model.PluginXmlAccess;
 import org.eclipse.xtext.xtext.generator.model.project.BundleProjectConfig;
+import org.eclipse.xtext.xtext.generator.model.project.PeWebProjectConfig;
 import org.eclipse.xtext.xtext.generator.model.project.RuntimeProjectConfig;
 import org.eclipse.xtext.xtext.generator.model.project.SubProjectConfig;
 import org.eclipse.xtext.xtext.generator.model.project.WebProjectConfig;
@@ -125,6 +126,13 @@ public class StandardProjectConfig extends XtextProjectConfig {
           ((WebProjectConfig)it).setAssets(this.computeAssets(((WebProjectConfig)it)));
         }
       }
+      if ((it instanceof PeWebProjectConfig)) {
+        String _assetsPath_1 = ((PeWebProjectConfig)it).getAssetsPath();
+        boolean _tripleEquals_9 = (_assetsPath_1 == null);
+        if (_tripleEquals_9) {
+          ((PeWebProjectConfig)it).setAssets(this.computeAssets(((PeWebProjectConfig)it)));
+        }
+      }
     };
     this.getEnabledProjects().forEach(_function);
   }
@@ -189,6 +197,13 @@ public class StandardProjectConfig extends XtextProjectConfig {
       if (Objects.equal(project, _web)) {
         _matched=true;
         _switchResult = (this.baseName + ".web");
+      }
+    }
+    if (!_matched) {
+      PeWebProjectConfig _peWeb = this.getPeWeb();
+      if (Objects.equal(project, _peWeb)) {
+        _matched=true;
+        _switchResult = (this.baseName + ".peWeb");
       }
     }
     return _switchResult;
@@ -257,6 +272,20 @@ public class StandardProjectConfig extends XtextProjectConfig {
   }
   
   protected String computeAssets(final WebProjectConfig project) {
+    String _rootPath = project.getRootPath();
+    String _plus = (_rootPath + "/");
+    String _xifexpression = null;
+    if (this.mavenLayout) {
+      String _computeSourceSet = this.computeSourceSet(project);
+      String _plus_1 = ("src/" + _computeSourceSet);
+      _xifexpression = (_plus_1 + "/webapp");
+    } else {
+      _xifexpression = "WebRoot";
+    }
+    return (_plus + _xifexpression);
+  }
+  
+  protected String computeAssets(final PeWebProjectConfig project) {
     String _rootPath = project.getRootPath();
     String _plus = (_rootPath + "/");
     String _xifexpression = null;

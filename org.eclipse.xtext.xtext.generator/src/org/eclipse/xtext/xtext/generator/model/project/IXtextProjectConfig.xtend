@@ -31,6 +31,8 @@ interface IXtextProjectConfig extends IGuiceAwareGeneratorComponent {
 	
 	def IWebProjectConfig getWeb()
 	
+	def IWebProjectConfig getPeWeb()
+	
 	def List<? extends ISubProjectConfig> getEnabledProjects()
 	
 	def List<? extends ISubProjectConfig> getTestProjects()

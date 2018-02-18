@@ -38,6 +38,7 @@ import org.eclipse.xtext.xtext.generator.validation.ValidatorFragment2
 import org.eclipse.xtext.xtext.generator.web.WebIntegrationFragment
 import org.eclipse.xtext.xtext.generator.xbase.XbaseGeneratorFragment2
 import org.eclipse.xtext.xtext.generator.xbase.XtypeGeneratorFragment2
+import org.eclipse.xtext.xtext.generator.peweb.PeWebIntegrationFragment
 
 /**
  * This specialization of the {@link XtextGeneratorLanguage} adds all the standard generator fragments
@@ -114,6 +115,8 @@ import org.eclipse.xtext.xtext.generator.xbase.XtypeGeneratorFragment2
 	
 	WebIntegrationFragment webSupport = new WebIntegrationFragment
 	
+	PeWebIntegrationFragment peWebSupport = new PeWebIntegrationFragment
+	
 	SimpleProjectWizardFragment2 newProjectWizardForEclipse = new SimpleProjectWizardFragment2
 	
 	new() {
@@ -138,6 +141,15 @@ import org.eclipse.xtext.xtext.generator.xbase.XtypeGeneratorFragment2
 			webSupport.generateJettyLauncher = true
 		if (!webSupport.generateHtmlExample.isSet)
 			webSupport.generateHtmlExample = true
+			
+		if (!peWebSupport.framework.isSet)
+			peWebSupport.framework = 'Ace'
+		if (!peWebSupport.generateServlet.isSet)
+			peWebSupport.generateServlet = true
+		if (!peWebSupport.generateJettyLauncher.isSet)
+			peWebSupport.generateJettyLauncher = true
+		if (!peWebSupport.generateHtmlExample.isSet)
+			peWebSupport.generateHtmlExample = true	
 		super.initialize(injector)
 	}
 	
@@ -170,6 +182,7 @@ import org.eclipse.xtext.xtext.generator.xbase.XtypeGeneratorFragment2
 		fragments += ideaParser
 		fragments += ideaPlugin
 		fragments += webSupport
+		fragments += peWebSupport
 		fragments += newProjectWizardForEclipse
 		fragments
 	}

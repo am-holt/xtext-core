@@ -30,6 +30,7 @@ import org.eclipse.xtext.xtext.generator.idea.IdeaPluginGenerator;
 import org.eclipse.xtext.xtext.generator.idea.parser.antlr.XtextAntlrIDEAGeneratorFragment;
 import org.eclipse.xtext.xtext.generator.junit.Junit4Fragment2;
 import org.eclipse.xtext.xtext.generator.parser.antlr.XtextAntlrGeneratorFragment2;
+import org.eclipse.xtext.xtext.generator.peweb.PeWebIntegrationFragment;
 import org.eclipse.xtext.xtext.generator.resourceFactory.ResourceFactoryFragment2;
 import org.eclipse.xtext.xtext.generator.scoping.ImportNamespacesScopingFragment2;
 import org.eclipse.xtext.xtext.generator.serializer.SerializerFragment2;
@@ -124,6 +125,8 @@ public class StandardLanguage extends XtextGeneratorLanguage {
   
   private WebIntegrationFragment webSupport = new WebIntegrationFragment();
   
+  private PeWebIntegrationFragment peWebSupport = new PeWebIntegrationFragment();
+  
   private SimpleProjectWizardFragment2 newProjectWizardForEclipse = new SimpleProjectWizardFragment2();
   
   public StandardLanguage() {
@@ -171,6 +174,26 @@ public class StandardLanguage extends XtextGeneratorLanguage {
     if (_not_5) {
       this.webSupport.setGenerateHtmlExample(true);
     }
+    boolean _isSet_6 = this.peWebSupport.getFramework().isSet();
+    boolean _not_6 = (!_isSet_6);
+    if (_not_6) {
+      this.peWebSupport.setFramework("Ace");
+    }
+    boolean _isSet_7 = this.peWebSupport.getGenerateServlet().isSet();
+    boolean _not_7 = (!_isSet_7);
+    if (_not_7) {
+      this.peWebSupport.setGenerateServlet(true);
+    }
+    boolean _isSet_8 = this.peWebSupport.getGenerateJettyLauncher().isSet();
+    boolean _not_8 = (!_isSet_8);
+    if (_not_8) {
+      this.peWebSupport.setGenerateJettyLauncher(true);
+    }
+    boolean _isSet_9 = this.peWebSupport.getGenerateHtmlExample().isSet();
+    boolean _not_9 = (!_isSet_9);
+    if (_not_9) {
+      this.peWebSupport.setGenerateHtmlExample(true);
+    }
     super.initialize(injector);
   }
   
@@ -207,6 +230,7 @@ public class StandardLanguage extends XtextGeneratorLanguage {
       this.operator_add(fragments, this.ideaParser);
       this.operator_add(fragments, this.ideaPlugin);
       this.operator_add(fragments, this.webSupport);
+      this.operator_add(fragments, this.peWebSupport);
       this.operator_add(fragments, this.newProjectWizardForEclipse);
       _xblockexpression = fragments;
     }
@@ -453,6 +477,15 @@ public class StandardLanguage extends XtextGeneratorLanguage {
   
   public void setWebSupport(final WebIntegrationFragment webSupport) {
     this.webSupport = webSupport;
+  }
+  
+  @Pure
+  protected PeWebIntegrationFragment getPeWebSupport() {
+    return this.peWebSupport;
+  }
+  
+  public void setPeWebSupport(final PeWebIntegrationFragment peWebSupport) {
+    this.peWebSupport = peWebSupport;
   }
   
   @Pure

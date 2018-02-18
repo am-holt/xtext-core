@@ -225,6 +225,11 @@ class RuntimeProjectDescriptor extends TestedProjectDescriptor {
 									enabled = true
 								}
 							«ENDIF»
+							«IF config.peWebProject.enabled»
+								peWeb = {
+									enabled = true
+								}
+							«ENDIF»
 							«IF config.sourceLayout == SourceLayout.MAVEN»
 								mavenLayout = true
 							«ENDIF»

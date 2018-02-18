@@ -35,6 +35,8 @@ public interface IXtextProjectConfig extends IGuiceAwareGeneratorComponent {
   
   public abstract IWebProjectConfig getWeb();
   
+  public abstract IWebProjectConfig getPeWeb();
+  
   public abstract List<? extends ISubProjectConfig> getEnabledProjects();
   
   public abstract List<? extends ISubProjectConfig> getTestProjects();

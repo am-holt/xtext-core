@@ -36,6 +36,8 @@ public interface IXtextGeneratorLanguage {
   
   public abstract GuiceModuleAccess getWebGenModule();
   
+  public abstract GuiceModuleAccess getPeWebGenModule();
+  
   public abstract ResourceSet getResourceSet();
   
   /**

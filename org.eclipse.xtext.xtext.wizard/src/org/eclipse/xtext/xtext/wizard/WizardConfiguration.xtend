@@ -40,10 +40,12 @@ class WizardConfiguration {
 	val uiProject = new UiProjectDescriptor(this)
 	val intellijProject = new IntellijProjectDescriptor(this)
 	val webProject = new WebProjectDescriptor(this)
+	val peWebProject = new PeWebProjectDescriptor(this)
 	val parentProject = new ParentProjectDescriptor(this)
 	val targetPlatformProject = new TargetPlatformProject(this)
 	val sdkProject = new SdkFeatureProject(this)
 	val p2Project = new P2RepositoryProject(this)
+
 
 	def Set<ProjectDescriptor> getEnabledProjects() {
 		val productionProjects = #[
@@ -53,6 +55,7 @@ class WizardConfiguration {
 			uiProject,
 			intellijProject,
 			webProject,
+			peWebProject,
 			targetPlatformProject,
 			sdkProject,
 			p2Project
