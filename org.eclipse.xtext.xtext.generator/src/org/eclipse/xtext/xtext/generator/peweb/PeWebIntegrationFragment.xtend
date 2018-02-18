@@ -199,11 +199,11 @@ class PeWebIntegrationFragment  extends AbstractXtextGeneratorFragment {
 	}
 	
 	protected def TypeReference getServerLauncherClass(Grammar grammar) {
-		new TypeReference(grammar.webBasePackage + '.' + 'ServerLauncher')
+		new TypeReference(grammar.peWebBasePackage + '.' + 'ServerLauncher')
 	}
 	
 	protected def TypeReference getServletClass(Grammar grammar) {
-		new TypeReference(grammar.webBasePackage + '.' + GrammarUtil.getSimpleName(grammar) + 'Servlet')
+		new TypeReference(grammar.peWebBasePackage + '.' + GrammarUtil.getSimpleName(grammar) + 'Servlet')
 	}
 	
 	override checkConfiguration(Issues issues) {

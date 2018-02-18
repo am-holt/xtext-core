@@ -205,9 +205,40 @@ public class XtextGeneratorNaming {
     return new TypeReference(_ideaBasePackage, _plus);
   }
   
+  public String getPeWebBasePackage(final Grammar grammar) {
+    String _namespace = GrammarUtil.getNamespace(grammar);
+    return (_namespace + ".peweb");
+  }
+  
+  public TypeReference getPeWebModule(final Grammar grammar) {
+    String _peWebBasePackage = this.getPeWebBasePackage(grammar);
+    String _simpleName = GrammarUtil.getSimpleName(grammar);
+    String _plus = (_simpleName + "PeWebModule");
+    return new TypeReference(_peWebBasePackage, _plus);
+  }
+  
+  public TypeReference getPeDefaultModule(final Grammar grammar) {
+    return new TypeReference("org.eclipse.xtext.peweb.server.DefaultPeWebModule");
+  }
+  
+  public TypeReference getPeGenModule(final Grammar grammar) {
+    String _peWebBasePackage = this.getPeWebBasePackage(grammar);
+    String _simpleName = GrammarUtil.getSimpleName(grammar);
+    String _plus = ("Abstract" + _simpleName);
+    String _plus_1 = (_plus + "PeWebModule");
+    return new TypeReference(_peWebBasePackage, _plus_1);
+  }
+  
+  public TypeReference getPeWebSetup(final Grammar grammar) {
+    String _peWebBasePackage = this.getPeWebBasePackage(grammar);
+    String _simpleName = GrammarUtil.getSimpleName(grammar);
+    String _plus = (_simpleName + "PeWebSetup");
+    return new TypeReference(_peWebBasePackage, _plus);
+  }
+  
   public String getWebBasePackage(final Grammar grammar) {
     String _namespace = GrammarUtil.getNamespace(grammar);
-    return (_namespace + ".peWeb");
+    return (_namespace + ".web");
   }
   
   public TypeReference getWebModule(final Grammar grammar) {

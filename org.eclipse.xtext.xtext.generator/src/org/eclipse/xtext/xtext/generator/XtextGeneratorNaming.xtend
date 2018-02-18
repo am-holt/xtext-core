@@ -150,9 +150,29 @@ class XtextGeneratorNaming {
 	def getIdeaStandaloneSetup(Grammar grammar) {
 		new TypeReference(grammar.ideaBasePackage, getSimpleName(grammar) + "StandaloneSetupIdea")
 	}
+
+	def getPeWebBasePackage(Grammar grammar) {
+		return getNamespace(grammar) + ".peweb"
+	}
+	
+	def getPeWebModule(Grammar grammar) {
+		new TypeReference(grammar.peWebBasePackage, getSimpleName(grammar) + 'PeWebModule')
+	}
+	
+	def getPeDefaultModule(Grammar grammar) {
+		new TypeReference('org.eclipse.xtext.peweb.server.DefaultPeWebModule')
+	}
+	
+	def getPeGenModule(Grammar grammar) {
+		new TypeReference(grammar.peWebBasePackage, 'Abstract' + getSimpleName(grammar) + 'PeWebModule')
+	}
+	
+	def getPeWebSetup(Grammar grammar) {
+		new TypeReference(grammar.peWebBasePackage, getSimpleName(grammar) + 'PeWebSetup')
+	}
 	
 	def getWebBasePackage(Grammar grammar) {
-		return getNamespace(grammar) + ".peWeb"
+		return getNamespace(grammar) + ".web"
 	}
 	
 	def getWebModule(Grammar grammar) {

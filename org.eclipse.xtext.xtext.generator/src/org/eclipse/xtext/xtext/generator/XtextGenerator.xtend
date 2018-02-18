@@ -167,9 +167,9 @@ class XtextGenerator extends AbstractWorkflowComponent2 {
 				try {
 					LOG.info('Generating ' + language.grammar.name)
 					language.generate
-					//language.generateSetups
-				//	language.generateModules
-				//	language.generateExecutableExtensionFactory
+					language.generateSetups
+					language.generateModules
+					language.generateExecutableExtensionFactory
 				} catch(Exception e) {
 					handleException(e, issues)
 				}

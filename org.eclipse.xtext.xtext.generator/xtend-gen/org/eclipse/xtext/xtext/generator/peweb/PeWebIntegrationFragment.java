@@ -232,15 +232,15 @@ public class PeWebIntegrationFragment extends AbstractXtextGeneratorFragment {
   }
   
   protected TypeReference getServerLauncherClass(final Grammar grammar) {
-    String _webBasePackage = this._xtextGeneratorNaming.getWebBasePackage(grammar);
-    String _plus = (_webBasePackage + ".");
+    String _peWebBasePackage = this._xtextGeneratorNaming.getPeWebBasePackage(grammar);
+    String _plus = (_peWebBasePackage + ".");
     String _plus_1 = (_plus + "ServerLauncher");
     return new TypeReference(_plus_1);
   }
   
   protected TypeReference getServletClass(final Grammar grammar) {
-    String _webBasePackage = this._xtextGeneratorNaming.getWebBasePackage(grammar);
-    String _plus = (_webBasePackage + ".");
+    String _peWebBasePackage = this._xtextGeneratorNaming.getPeWebBasePackage(grammar);
+    String _plus = (_peWebBasePackage + ".");
     String _simpleName = GrammarUtil.getSimpleName(grammar);
     String _plus_1 = (_plus + _simpleName);
     String _plus_2 = (_plus_1 + "Servlet");
