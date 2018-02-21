@@ -32,6 +32,7 @@ import org.eclipse.xtext.xtext.wizard.GradleBuildFile;
 import org.eclipse.xtext.xtext.wizard.IdeProjectDescriptor;
 import org.eclipse.xtext.xtext.wizard.LanguageDescriptor;
 import org.eclipse.xtext.xtext.wizard.Outlet;
+import org.eclipse.xtext.xtext.wizard.PeWebProjectDescriptor;
 import org.eclipse.xtext.xtext.wizard.PlainTextFile;
 import org.eclipse.xtext.xtext.wizard.PomFile;
 import org.eclipse.xtext.xtext.wizard.ProjectDescriptor;
@@ -354,7 +355,7 @@ public class RuntimeProjectDescriptor extends TestedProjectDescriptor {
       }
     }
     {
-      if ((this.getConfig().getIdeProject().isEnabled() && (!IterableExtensions.exists(Collections.<ProjectDescriptor>unmodifiableList(CollectionLiterals.<ProjectDescriptor>newArrayList(this.getConfig().getWebProject(), this.getConfig().getIntellijProject(), this.getConfig().getUiProject())), ((Function1<ProjectDescriptor, Boolean>) (ProjectDescriptor it) -> {
+      if ((this.getConfig().getIdeProject().isEnabled() && (!IterableExtensions.exists(Collections.<ProjectDescriptor>unmodifiableList(CollectionLiterals.<ProjectDescriptor>newArrayList(this.getConfig().getWebProject(), this.getConfig().getPeWebProject(), this.getConfig().getIntellijProject(), this.getConfig().getUiProject())), ((Function1<ProjectDescriptor, Boolean>) (ProjectDescriptor it) -> {
         return Boolean.valueOf(it.isEnabled());
       }))))) {
         _builder.append("\t\t\t\t");
@@ -998,7 +999,8 @@ public class RuntimeProjectDescriptor extends TestedProjectDescriptor {
         IdeProjectDescriptor _ideProject = this.getConfig().getIdeProject();
         UiProjectDescriptor _uiProject = this.getConfig().getUiProject();
         WebProjectDescriptor _webProject = this.getConfig().getWebProject();
-        for(final ProjectDescriptor p : Collections.<ProjectDescriptor>unmodifiableList(CollectionLiterals.<ProjectDescriptor>newArrayList(this, _ideProject, _uiProject, _webProject))) {
+        PeWebProjectDescriptor _peWebProject = this.getConfig().getPeWebProject();
+        for(final ProjectDescriptor p : Collections.<ProjectDescriptor>unmodifiableList(CollectionLiterals.<ProjectDescriptor>newArrayList(this, _ideProject, _uiProject, _webProject, _peWebProject))) {
           {
             boolean _isEnabled = p.isEnabled();
             if (_isEnabled) {

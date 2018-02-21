@@ -200,7 +200,7 @@ class RuntimeProjectDescriptor extends TestedProjectDescriptor {
 								}
 							«ENDIF»
 							«IF config.ideProject.enabled 
-								&& !#[config.webProject, config.intellijProject, config.uiProject].exists[enabled]»
+								&& !#[config.webProject, config.peWebProject, config.intellijProject, config.uiProject].exists[enabled]»
 								genericIde = {
 									enabled = true
 								}
@@ -399,7 +399,7 @@ class RuntimeProjectDescriptor extends TestedProjectDescriptor {
 							<artifactId>maven-clean-plugin</artifactId>
 							<configuration>
 								<filesets combine.children="append">
-									«FOR p : #[this, config.ideProject, config.uiProject, config.webProject]»
+									«FOR p : #[this, config.ideProject, config.uiProject, config.webProject, config.peWebProject]»
 										«IF p.enabled»
 											<fileset>
 												<directory>${basedir}/../«p.name»/«Outlet.MAIN_SRC_GEN.sourceFolder»/</directory>

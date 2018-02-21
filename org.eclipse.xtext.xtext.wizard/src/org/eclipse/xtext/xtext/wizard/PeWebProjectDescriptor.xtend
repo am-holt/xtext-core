@@ -10,7 +10,7 @@ class PeWebProjectDescriptor extends ProjectDescriptor {
 	static val REQUIREJS_VERSION = '2.3.2'
 //	static val REQUIREJS_TEXT_VERSION = '2.0.15'
 	static val JQUERY_VERSION = '2.2.4'
-	static val JETTY_VERSION = '9.3.8.v20160314'
+	static val JETTY_VERSION = '9.4.8.v20171121'
 	static val SLF4J_VERSION = '1.7.21'
 	static val ACE_VERSION = '1.2.3'
 	
@@ -38,7 +38,7 @@ class PeWebProjectDescriptor extends ProjectDescriptor {
 		val deps = newLinkedHashSet
 		deps += super.externalDependencies
 		deps += createXtextDependency("org.eclipse.xtext.xbase.web")
-		deps += createXtextDependency("org.eclipse.xtext.web.servlet")
+		deps += createXtextDependency("org.eclipse.xtext.peweb")
 		deps += createMavenDependency("org.eclipse.xtend:org.eclipse.xtend.lib:${xtextVersion}")
 		deps += createMavenDependency("org.webjars:requirejs:" + REQUIREJS_VERSION)
 		// RequireJS-Text is only needed for Orion

@@ -26,7 +26,7 @@ public class PeWebProjectDescriptor extends ProjectDescriptor {
   
   private final static String JQUERY_VERSION = "2.2.4";
   
-  private final static String JETTY_VERSION = "9.3.8.v20160314";
+  private final static String JETTY_VERSION = "9.4.8.v20171121";
   
   private final static String SLF4J_VERSION = "1.7.21";
   
@@ -66,7 +66,7 @@ public class PeWebProjectDescriptor extends ProjectDescriptor {
     Iterables.<ExternalDependency>addAll(deps, _externalDependencies);
     ExternalDependency _createXtextDependency = ExternalDependency.createXtextDependency("org.eclipse.xtext.xbase.web");
     deps.add(_createXtextDependency);
-    ExternalDependency _createXtextDependency_1 = ExternalDependency.createXtextDependency("org.eclipse.xtext.web.servlet");
+    ExternalDependency _createXtextDependency_1 = ExternalDependency.createXtextDependency("org.eclipse.xtext.peweb");
     deps.add(_createXtextDependency_1);
     ExternalDependency _createMavenDependency = ExternalDependency.createMavenDependency("org.eclipse.xtend:org.eclipse.xtend.lib:${xtextVersion}");
     deps.add(_createMavenDependency);
