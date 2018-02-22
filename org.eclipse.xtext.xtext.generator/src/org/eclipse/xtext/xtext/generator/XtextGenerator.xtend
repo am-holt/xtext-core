@@ -198,6 +198,7 @@ class XtextGenerator extends AbstractWorkflowComponent2 {
 		templates.createRuntimeSetup(language).writeTo(projectConfig.runtime.src)
 		templates.createIdeSetup(language).writeTo(projectConfig.genericIde.src)
 		templates.createWebSetup(language).writeTo(projectConfig.web.src)
+		templates.createPeWebSetup(language).writeTo(projectConfig.peWeb.src)
 	}
 	
 	protected def generateModules(IXtextGeneratorLanguage language) {
@@ -211,6 +212,10 @@ class XtextGenerator extends AbstractWorkflowComponent2 {
 		templates.createIdeaModule(language).writeTo(projectConfig.ideaPlugin.src)
 		templates.createWebGenModule(language).writeTo(projectConfig.web.srcGen)
 		templates.createWebModule(language).writeTo(projectConfig.web.src)
+		templates.createPeWebGenModule(language).writeTo(projectConfig.peWeb.srcGen)
+		templates.createPeWebModule(language).writeTo(projectConfig.peWeb.src)
+		templates.createPeFileResourceHandler(language).writeTo(projectConfig.peWeb.src)
+		templates.createPeResourceBaseProvider(language).writeTo(projectConfig.peWeb.src)
 	}
 	
 	protected def generateExecutableExtensionFactory(IXtextGeneratorLanguage language) {

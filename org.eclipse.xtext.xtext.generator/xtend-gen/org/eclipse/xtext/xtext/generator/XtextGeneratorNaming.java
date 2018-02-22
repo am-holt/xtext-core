@@ -217,11 +217,11 @@ public class XtextGeneratorNaming {
     return new TypeReference(_peWebBasePackage, _plus);
   }
   
-  public TypeReference getPeDefaultModule(final Grammar grammar) {
-    return new TypeReference("org.eclipse.xtext.peweb.server.DefaultPeWebModule");
+  public TypeReference getPeWebDefaultModule(final Grammar grammar) {
+    return new TypeReference("org.eclipse.xtext.web.server.DefaultWebModule");
   }
   
-  public TypeReference getPeGenModule(final Grammar grammar) {
+  public TypeReference getPeWebGenModule(final Grammar grammar) {
     String _peWebBasePackage = this.getPeWebBasePackage(grammar);
     String _simpleName = GrammarUtil.getSimpleName(grammar);
     String _plus = ("Abstract" + _simpleName);
@@ -233,6 +233,20 @@ public class XtextGeneratorNaming {
     String _peWebBasePackage = this.getPeWebBasePackage(grammar);
     String _simpleName = GrammarUtil.getSimpleName(grammar);
     String _plus = (_simpleName + "PeWebSetup");
+    return new TypeReference(_peWebBasePackage, _plus);
+  }
+  
+  public TypeReference getPeFileResourceHandler(final Grammar grammar) {
+    String _peWebBasePackage = this.getPeWebBasePackage(grammar);
+    String _simpleName = GrammarUtil.getSimpleName(grammar);
+    String _plus = (_simpleName + "PeFileResourceHandler");
+    return new TypeReference(_peWebBasePackage, _plus);
+  }
+  
+  public TypeReference getPeResourceBaseProvider(final Grammar grammar) {
+    String _peWebBasePackage = this.getPeWebBasePackage(grammar);
+    String _simpleName = GrammarUtil.getSimpleName(grammar);
+    String _plus = (_simpleName + "PeResourceBaseProvider");
     return new TypeReference(_peWebBasePackage, _plus);
   }
   

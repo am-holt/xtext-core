@@ -51,6 +51,9 @@ class XtextGeneratorTemplates {
 	
 	@Inject extension XtextGeneratorNaming naming
 	
+	private val IServerResourceHandlerTypeRef = 'org.eclipse.xtext.web.server.persistence.IServerResourceHandler'.typeRef;
+	private val IResourceBaseProviderTypeRef = 'org.eclipse.xtext.web.server.persistence.IResourceBaseProvider'.typeRef;
+	
 	def JavaFileAccess createRuntimeSetup(IXtextGeneratorLanguage langConfig) {
 		val it = langConfig.grammar
 		if (codeConfig.preferXtendStubs) {
@@ -493,6 +496,169 @@ class XtextGeneratorTemplates {
 				}
 			''')
 		}
+	}
+	
+	def JavaFileAccess createPeWebModule(IXtextGeneratorLanguage langConfig) {
+		val it = langConfig.grammar
+		if (codeConfig.preferXtendStubs) {
+			return fileAccessFactory.createXtendFile(peWebModule,'''
+				/**
+				 * Use this class to register additional components to be used within the pe web application.
+				 */
+				class «peWebModule.simpleName» extends «peWebGenModule» {
+					def Class<? extends «'org.eclipse.xtext.web.server.persistence.IServerResourceHandler'.typeRef»> bindIServerResourceHandler() {
+							    return «peFileResourceHandler»;
+					}
+							  
+					def Class<? extends «'org.eclipse.xtext.web.server.persistence.IResourceBaseProvider'.typeRef»> bindIResourceBaseProvider() {
+							  return «peResourceBaseProvider»;
+					}
+				}
+			''')
+		} else {
+			return fileAccessFactory.createJavaFile(peWebModule,'''
+				/**
+				 * Use this class to register additional components to be used within the pe web application.
+				 */
+				public class «peWebModule.simpleName» extends «peWebGenModule» {
+					public Class<? extends «IServerResourceHandlerTypeRef»> bindIServerResourceHandler() {
+						return «peFileResourceHandler».class;
+					}
+											  
+					public Class<? extends «IResourceBaseProviderTypeRef»> bindIResourceBaseProvider() {
+						return «peResourceBaseProvider».class;
+					}
+				}
+			''')
+		}
+	}
+	
+	def JavaFileAccess createPeWebGenModule(IXtextGeneratorLanguage langConfig) {
+		val it = langConfig.grammar
+		val superClass = langConfig.peWebGenModule.superClass ?: peWebDefaultModule
+		val file = fileAccessFactory.createGeneratedJavaFile(peWebGenModule)
+		file.importNestedTypeThreshold = JavaFileAccess.DONT_IMPORT_NESTED_TYPES
+		file.typeComment = '''
+			/**
+			 * Manual modifications go to {@link «peWebModule.simpleName»}.
+			 */
+		'''
+		file.annotations += new SuppressWarningsAnnotation
+		file.content = '''
+			public abstract class «peWebGenModule.simpleName» extends «superClass» {
+			
+				«FOR binding : langConfig.peWebGenModule.bindings»
+					«binding.createBindingMethod»
+					
+				«ENDFOR»
+			}
+		'''
+		file.markedAsGenerated = true
+		return file
+	}
+	
+	def JavaFileAccess createPeWebSetup(IXtextGeneratorLanguage langConfig) {
+		val it = langConfig.grammar
+		if (codeConfig.preferXtendStubs) {
+			return fileAccessFactory.createXtendFile(peWebSetup, '''
+				/**
+				 * Initialization support for running Xtext languages in pe web applications.
+				 */
+				class «peWebSetup.simpleName» extends «runtimeSetup» {
+					
+					override «Injector» createInjector() {
+						return «Guice».createInjector(«Modules2».mixin(new «runtimeModule», new «genericIdeModule», new «peWebModule»))
+					}
+					
+				}
+			''')
+		} else {
+			return fileAccessFactory.createJavaFile(peWebSetup, '''
+				/**
+				 * Initialization support for running Xtext languages in pe web applications.
+				 */
+				public class «peWebSetup.simpleName» extends «runtimeSetup» {
+					
+					@Override
+					public «Injector» createInjector() {
+						return «Guice».createInjector(«Modules2».mixin(new «runtimeModule»(), new «genericIdeModule»(), new «peWebModule»()));
+					}
+					
+				}
+			''')
+		}
+	}
+	
+	//«»
+	
+	def JavaFileAccess createPeFileResourceHandler(IXtextGeneratorLanguage langConfig) {
+		val it = langConfig.grammar
+		val t = ''
+		
+		// import 
+		val inject = 'com.google.inject.Inject'.typeRef;
+		return fileAccessFactory.createXtendFile(peFileResourceHandler, '''
+			/**
+			 * Resource handler that reads and writes files. The file paths are given by an implementation
+			 * of {@link «IResourceBaseProviderTypeRef»}.
+			 */
+			class «peFileResourceHandler» implements «IServerResourceHandlerTypeRef»{
+				
+				@«inject» «IResourceBaseProviderTypeRef» resourceBaseProvider
+				
+				@«inject» «'org.eclipse.xtext.web.server.model.IWebResourceSetProvider'.typeRef» resourceSetProvider
+				
+				@«inject» «'org.eclipse.xtext.web.server.model.IWebDocumentProvider'.typeRef» documentProvider
+				
+				@«inject» «'org.eclipse.xtext.parser.IEncodingProvider'.typeRef» encodingProvider
+				
+				override get(String resourceId, «'org.eclipse.xtext.web.server.IServiceContext'.typeRef» serviceContext) throws «'java.io.IOException'.typeRef» {
+					try {
+						val uri = resourceBaseProvider.getFileURI(resourceId)
+						if (uri === null)
+							throw new «'java.io.IOException'.typeRef»('The requested resource does not exist.')
+						val resourceSet = resourceSetProvider.get(resourceId, serviceContext)
+						val resource = resourceSet.getResource(uri, true) as «'org.eclipse.xtext.resource.XtextResource'.typeRef»
+						return documentProvider.get(resourceId, serviceContext) => [
+							setInput(resource)
+						]
+					} catch («'org.eclipse.emf.common.util.WrappedException'.typeRef» exception) {
+						throw exception.cause
+					}
+				}
+				
+				override put(«'org.eclipse.xtext.web.server.model.IXtextWebDocument'.typeRef» document, «'org.eclipse.xtext.web.server.IServiceContext'.typeRef» serviceContext) throws «'java.io.IOException'.typeRef» {
+					try {
+						val uri = resourceBaseProvider.getFileURI(document.resourceId)
+						val outputStream = document.resource.resourceSet.URIConverter.createOutputStream(uri)
+						val writer = new OutputStreamWriter(outputStream, encodingProvider.getEncoding(uri))
+						writer.write(document.text)
+						writer.close
+					} catch («'org.eclipse.emf.common.util.WrappedException'.typeRef» exception) {
+						throw exception.cause
+					}
+				}
+				
+			}
+		''')
+	}
+	
+	def JavaFileAccess createPeResourceBaseProvider(IXtextGeneratorLanguage langConfig) {
+		val it = langConfig.grammar
+		val t = ''
+		
+		val URITypeRef = 'org.eclipse.emf.common.util.URI'.typeRef;
+		val FileTypeRef = 'java.io.File'.typeRef;
+		
+		
+		return fileAccessFactory.createXtendFile(peResourceBaseProvider, '''
+			class «peResourceBaseProvider» implements «IResourceBaseProviderTypeRef»{ 
+			  
+			  public override «URITypeRef» getFileURI(String resourceId) { 
+			    return «URITypeRef».createFileURI((("user-files" + «FileTypeRef».separator) + resourceId)); 
+			  } 
+			}
+		''')	
 	}
 
 	def JavaFileAccess createEclipsePluginExecutableExtensionFactory(IXtextGeneratorLanguage langConfig, IXtextGeneratorLanguage activatorLanguage) {

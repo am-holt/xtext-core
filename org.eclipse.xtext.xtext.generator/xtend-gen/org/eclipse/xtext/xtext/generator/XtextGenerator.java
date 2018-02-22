@@ -271,6 +271,7 @@ public class XtextGenerator extends AbstractWorkflowComponent2 {
     this.templates.createRuntimeSetup(language).writeTo(this.projectConfig.getRuntime().getSrc());
     this.templates.createIdeSetup(language).writeTo(this.projectConfig.getGenericIde().getSrc());
     this.templates.createWebSetup(language).writeTo(this.projectConfig.getWeb().getSrc());
+    this.templates.createPeWebSetup(language).writeTo(this.projectConfig.getPeWeb().getSrc());
   }
   
   protected void generateModules(final IXtextGeneratorLanguage language) {
@@ -284,6 +285,10 @@ public class XtextGenerator extends AbstractWorkflowComponent2 {
     this.templates.createIdeaModule(language).writeTo(this.projectConfig.getIdeaPlugin().getSrc());
     this.templates.createWebGenModule(language).writeTo(this.projectConfig.getWeb().getSrcGen());
     this.templates.createWebModule(language).writeTo(this.projectConfig.getWeb().getSrc());
+    this.templates.createPeWebGenModule(language).writeTo(this.projectConfig.getPeWeb().getSrcGen());
+    this.templates.createPeWebModule(language).writeTo(this.projectConfig.getPeWeb().getSrc());
+    this.templates.createPeFileResourceHandler(language).writeTo(this.projectConfig.getPeWeb().getSrc());
+    this.templates.createPeResourceBaseProvider(language).writeTo(this.projectConfig.getPeWeb().getSrc());
   }
   
   protected void generateExecutableExtensionFactory(final IXtextGeneratorLanguage language) {

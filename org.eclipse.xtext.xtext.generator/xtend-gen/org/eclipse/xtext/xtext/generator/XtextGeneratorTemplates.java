@@ -63,6 +63,10 @@ public class XtextGeneratorTemplates {
   @Extension
   private XtextGeneratorNaming naming;
   
+  private final TypeReference IServerResourceHandlerTypeRef = TypeReference.typeRef("org.eclipse.xtext.web.server.persistence.IServerResourceHandler");
+  
+  private final TypeReference IResourceBaseProviderTypeRef = TypeReference.typeRef("org.eclipse.xtext.web.server.persistence.IResourceBaseProvider");
+  
   public JavaFileAccess createRuntimeSetup(final IXtextGeneratorLanguage langConfig) {
     final Grammar it = langConfig.getGrammar();
     boolean _isPreferXtendStubs = this.codeConfig.isPreferXtendStubs();
@@ -1467,6 +1471,528 @@ public class XtextGeneratorTemplates {
       };
       return this.fileAccessFactory.createJavaFile(_webSetup_1, _client_1);
     }
+  }
+  
+  public JavaFileAccess createPeWebModule(final IXtextGeneratorLanguage langConfig) {
+    final Grammar it = langConfig.getGrammar();
+    boolean _isPreferXtendStubs = this.codeConfig.isPreferXtendStubs();
+    if (_isPreferXtendStubs) {
+      TypeReference _peWebModule = this.naming.getPeWebModule(it);
+      StringConcatenationClient _client = new StringConcatenationClient() {
+        @Override
+        protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+          _builder.append("/**");
+          _builder.newLine();
+          _builder.append(" ");
+          _builder.append("* Use this class to register additional components to be used within the pe web application.");
+          _builder.newLine();
+          _builder.append(" ");
+          _builder.append("*/");
+          _builder.newLine();
+          _builder.append("class ");
+          String _simpleName = XtextGeneratorTemplates.this.naming.getPeWebModule(it).getSimpleName();
+          _builder.append(_simpleName);
+          _builder.append(" extends ");
+          TypeReference _peWebGenModule = XtextGeneratorTemplates.this.naming.getPeWebGenModule(it);
+          _builder.append(_peWebGenModule);
+          _builder.append(" {");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t");
+          _builder.append("def Class<? extends ");
+          TypeReference _typeRef = TypeReference.typeRef("org.eclipse.xtext.web.server.persistence.IServerResourceHandler");
+          _builder.append(_typeRef, "\t");
+          _builder.append("> bindIServerResourceHandler() {");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t\t\t    ");
+          _builder.append("return ");
+          TypeReference _peFileResourceHandler = XtextGeneratorTemplates.this.naming.getPeFileResourceHandler(it);
+          _builder.append(_peFileResourceHandler, "\t\t\t    ");
+          _builder.append(";");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t");
+          _builder.append("}");
+          _builder.newLine();
+          _builder.append("\t\t\t  ");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("def Class<? extends ");
+          TypeReference _typeRef_1 = TypeReference.typeRef("org.eclipse.xtext.web.server.persistence.IResourceBaseProvider");
+          _builder.append(_typeRef_1, "\t");
+          _builder.append("> bindIResourceBaseProvider() {");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t\t\t  ");
+          _builder.append("return ");
+          TypeReference _peResourceBaseProvider = XtextGeneratorTemplates.this.naming.getPeResourceBaseProvider(it);
+          _builder.append(_peResourceBaseProvider, "\t\t\t  ");
+          _builder.append(";");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t");
+          _builder.append("}");
+          _builder.newLine();
+          _builder.append("}");
+          _builder.newLine();
+        }
+      };
+      return this.fileAccessFactory.createXtendFile(_peWebModule, _client);
+    } else {
+      TypeReference _peWebModule_1 = this.naming.getPeWebModule(it);
+      StringConcatenationClient _client_1 = new StringConcatenationClient() {
+        @Override
+        protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+          _builder.append("/**");
+          _builder.newLine();
+          _builder.append(" ");
+          _builder.append("* Use this class to register additional components to be used within the pe web application.");
+          _builder.newLine();
+          _builder.append(" ");
+          _builder.append("*/");
+          _builder.newLine();
+          _builder.append("public class ");
+          String _simpleName = XtextGeneratorTemplates.this.naming.getPeWebModule(it).getSimpleName();
+          _builder.append(_simpleName);
+          _builder.append(" extends ");
+          TypeReference _peWebGenModule = XtextGeneratorTemplates.this.naming.getPeWebGenModule(it);
+          _builder.append(_peWebGenModule);
+          _builder.append(" {");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t");
+          _builder.append("public Class<? extends ");
+          _builder.append(XtextGeneratorTemplates.this.IServerResourceHandlerTypeRef, "\t");
+          _builder.append("> bindIServerResourceHandler() {");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t\t");
+          _builder.append("return ");
+          TypeReference _peFileResourceHandler = XtextGeneratorTemplates.this.naming.getPeFileResourceHandler(it);
+          _builder.append(_peFileResourceHandler, "\t\t");
+          _builder.append(".class;");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t");
+          _builder.append("}");
+          _builder.newLine();
+          _builder.append("\t\t\t\t\t\t\t  ");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("public Class<? extends ");
+          _builder.append(XtextGeneratorTemplates.this.IResourceBaseProviderTypeRef, "\t");
+          _builder.append("> bindIResourceBaseProvider() {");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t\t");
+          _builder.append("return ");
+          TypeReference _peResourceBaseProvider = XtextGeneratorTemplates.this.naming.getPeResourceBaseProvider(it);
+          _builder.append(_peResourceBaseProvider, "\t\t");
+          _builder.append(".class;");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t");
+          _builder.append("}");
+          _builder.newLine();
+          _builder.append("}");
+          _builder.newLine();
+        }
+      };
+      return this.fileAccessFactory.createJavaFile(_peWebModule_1, _client_1);
+    }
+  }
+  
+  public JavaFileAccess createPeWebGenModule(final IXtextGeneratorLanguage langConfig) {
+    final Grammar it = langConfig.getGrammar();
+    TypeReference _elvis = null;
+    TypeReference _superClass = langConfig.getPeWebGenModule().getSuperClass();
+    if (_superClass != null) {
+      _elvis = _superClass;
+    } else {
+      TypeReference _peWebDefaultModule = this.naming.getPeWebDefaultModule(it);
+      _elvis = _peWebDefaultModule;
+    }
+    final TypeReference superClass = _elvis;
+    final GeneratedJavaFileAccess file = this.fileAccessFactory.createGeneratedJavaFile(this.naming.getPeWebGenModule(it));
+    file.setImportNestedTypeThreshold(JavaFileAccess.DONT_IMPORT_NESTED_TYPES);
+    StringConcatenationClient _client = new StringConcatenationClient() {
+      @Override
+      protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+        _builder.append("/**");
+        _builder.newLine();
+        _builder.append(" ");
+        _builder.append("* Manual modifications go to {@link ");
+        String _simpleName = XtextGeneratorTemplates.this.naming.getPeWebModule(it).getSimpleName();
+        _builder.append(_simpleName, " ");
+        _builder.append("}.");
+        _builder.newLineIfNotEmpty();
+        _builder.append(" ");
+        _builder.append("*/");
+        _builder.newLine();
+      }
+    };
+    file.setTypeComment(_client);
+    List<IClassAnnotation> _annotations = file.getAnnotations();
+    SuppressWarningsAnnotation _suppressWarningsAnnotation = new SuppressWarningsAnnotation();
+    _annotations.add(_suppressWarningsAnnotation);
+    StringConcatenationClient _client_1 = new StringConcatenationClient() {
+      @Override
+      protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+        _builder.append("public abstract class ");
+        String _simpleName = XtextGeneratorTemplates.this.naming.getPeWebGenModule(it).getSimpleName();
+        _builder.append(_simpleName);
+        _builder.append(" extends ");
+        _builder.append(superClass);
+        _builder.append(" {");
+        _builder.newLineIfNotEmpty();
+        _builder.newLine();
+        {
+          Set<GuiceModuleAccess.Binding> _bindings = langConfig.getPeWebGenModule().getBindings();
+          for(final GuiceModuleAccess.Binding binding : _bindings) {
+            _builder.append("\t");
+            StringConcatenationClient _createBindingMethod = XtextGeneratorTemplates.this.createBindingMethod(binding);
+            _builder.append(_createBindingMethod, "\t");
+            _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.newLine();
+          }
+        }
+        _builder.append("}");
+        _builder.newLine();
+      }
+    };
+    file.setContent(_client_1);
+    file.setMarkedAsGenerated(true);
+    return file;
+  }
+  
+  public JavaFileAccess createPeWebSetup(final IXtextGeneratorLanguage langConfig) {
+    final Grammar it = langConfig.getGrammar();
+    boolean _isPreferXtendStubs = this.codeConfig.isPreferXtendStubs();
+    if (_isPreferXtendStubs) {
+      TypeReference _peWebSetup = this.naming.getPeWebSetup(it);
+      StringConcatenationClient _client = new StringConcatenationClient() {
+        @Override
+        protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+          _builder.append("/**");
+          _builder.newLine();
+          _builder.append(" ");
+          _builder.append("* Initialization support for running Xtext languages in pe web applications.");
+          _builder.newLine();
+          _builder.append(" ");
+          _builder.append("*/");
+          _builder.newLine();
+          _builder.append("class ");
+          String _simpleName = XtextGeneratorTemplates.this.naming.getPeWebSetup(it).getSimpleName();
+          _builder.append(_simpleName);
+          _builder.append(" extends ");
+          TypeReference _runtimeSetup = XtextGeneratorTemplates.this.naming.getRuntimeSetup(it);
+          _builder.append(_runtimeSetup);
+          _builder.append(" {");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("override ");
+          _builder.append(Injector.class, "\t");
+          _builder.append(" createInjector() {");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t\t");
+          _builder.append("return ");
+          _builder.append(Guice.class, "\t\t");
+          _builder.append(".createInjector(");
+          _builder.append(Modules2.class, "\t\t");
+          _builder.append(".mixin(new ");
+          TypeReference _runtimeModule = XtextGeneratorTemplates.this.naming.getRuntimeModule(it);
+          _builder.append(_runtimeModule, "\t\t");
+          _builder.append(", new ");
+          TypeReference _genericIdeModule = XtextGeneratorTemplates.this.naming.getGenericIdeModule(it);
+          _builder.append(_genericIdeModule, "\t\t");
+          _builder.append(", new ");
+          TypeReference _peWebModule = XtextGeneratorTemplates.this.naming.getPeWebModule(it);
+          _builder.append(_peWebModule, "\t\t");
+          _builder.append("))");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t");
+          _builder.append("}");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.newLine();
+          _builder.append("}");
+          _builder.newLine();
+        }
+      };
+      return this.fileAccessFactory.createXtendFile(_peWebSetup, _client);
+    } else {
+      TypeReference _peWebSetup_1 = this.naming.getPeWebSetup(it);
+      StringConcatenationClient _client_1 = new StringConcatenationClient() {
+        @Override
+        protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+          _builder.append("/**");
+          _builder.newLine();
+          _builder.append(" ");
+          _builder.append("* Initialization support for running Xtext languages in pe web applications.");
+          _builder.newLine();
+          _builder.append(" ");
+          _builder.append("*/");
+          _builder.newLine();
+          _builder.append("public class ");
+          String _simpleName = XtextGeneratorTemplates.this.naming.getPeWebSetup(it).getSimpleName();
+          _builder.append(_simpleName);
+          _builder.append(" extends ");
+          TypeReference _runtimeSetup = XtextGeneratorTemplates.this.naming.getRuntimeSetup(it);
+          _builder.append(_runtimeSetup);
+          _builder.append(" {");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("@Override");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.append("public ");
+          _builder.append(Injector.class, "\t");
+          _builder.append(" createInjector() {");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t\t");
+          _builder.append("return ");
+          _builder.append(Guice.class, "\t\t");
+          _builder.append(".createInjector(");
+          _builder.append(Modules2.class, "\t\t");
+          _builder.append(".mixin(new ");
+          TypeReference _runtimeModule = XtextGeneratorTemplates.this.naming.getRuntimeModule(it);
+          _builder.append(_runtimeModule, "\t\t");
+          _builder.append("(), new ");
+          TypeReference _genericIdeModule = XtextGeneratorTemplates.this.naming.getGenericIdeModule(it);
+          _builder.append(_genericIdeModule, "\t\t");
+          _builder.append("(), new ");
+          TypeReference _peWebModule = XtextGeneratorTemplates.this.naming.getPeWebModule(it);
+          _builder.append(_peWebModule, "\t\t");
+          _builder.append("()));");
+          _builder.newLineIfNotEmpty();
+          _builder.append("\t");
+          _builder.append("}");
+          _builder.newLine();
+          _builder.append("\t");
+          _builder.newLine();
+          _builder.append("}");
+          _builder.newLine();
+        }
+      };
+      return this.fileAccessFactory.createJavaFile(_peWebSetup_1, _client_1);
+    }
+  }
+  
+  public JavaFileAccess createPeFileResourceHandler(final IXtextGeneratorLanguage langConfig) {
+    final Grammar it = langConfig.getGrammar();
+    final String t = "";
+    final TypeReference inject = TypeReference.typeRef("com.google.inject.Inject");
+    TypeReference _peFileResourceHandler = this.naming.getPeFileResourceHandler(it);
+    StringConcatenationClient _client = new StringConcatenationClient() {
+      @Override
+      protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+        _builder.append("/**");
+        _builder.newLine();
+        _builder.append(" ");
+        _builder.append("* Resource handler that reads and writes files. The file paths are given by an implementation");
+        _builder.newLine();
+        _builder.append(" ");
+        _builder.append("* of {@link ");
+        _builder.append(XtextGeneratorTemplates.this.IResourceBaseProviderTypeRef, " ");
+        _builder.append("}.");
+        _builder.newLineIfNotEmpty();
+        _builder.append(" ");
+        _builder.append("*/");
+        _builder.newLine();
+        _builder.append("class ");
+        TypeReference _peFileResourceHandler = XtextGeneratorTemplates.this.naming.getPeFileResourceHandler(it);
+        _builder.append(_peFileResourceHandler);
+        _builder.append(" implements ");
+        _builder.append(XtextGeneratorTemplates.this.IServerResourceHandlerTypeRef);
+        _builder.append("{");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("@");
+        _builder.append(inject, "\t");
+        _builder.append(" ");
+        _builder.append(XtextGeneratorTemplates.this.IResourceBaseProviderTypeRef, "\t");
+        _builder.append(" resourceBaseProvider");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("@");
+        _builder.append(inject, "\t");
+        _builder.append(" ");
+        TypeReference _typeRef = TypeReference.typeRef("org.eclipse.xtext.web.server.model.IWebResourceSetProvider");
+        _builder.append(_typeRef, "\t");
+        _builder.append(" resourceSetProvider");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("@");
+        _builder.append(inject, "\t");
+        _builder.append(" ");
+        TypeReference _typeRef_1 = TypeReference.typeRef("org.eclipse.xtext.web.server.model.IWebDocumentProvider");
+        _builder.append(_typeRef_1, "\t");
+        _builder.append(" documentProvider");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("@");
+        _builder.append(inject, "\t");
+        _builder.append(" ");
+        TypeReference _typeRef_2 = TypeReference.typeRef("org.eclipse.xtext.parser.IEncodingProvider");
+        _builder.append(_typeRef_2, "\t");
+        _builder.append(" encodingProvider");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("override get(String resourceId, ");
+        TypeReference _typeRef_3 = TypeReference.typeRef("org.eclipse.xtext.web.server.IServiceContext");
+        _builder.append(_typeRef_3, "\t");
+        _builder.append(" serviceContext) throws ");
+        TypeReference _typeRef_4 = TypeReference.typeRef("java.io.IOException");
+        _builder.append(_typeRef_4, "\t");
+        _builder.append(" {");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t");
+        _builder.append("try {");
+        _builder.newLine();
+        _builder.append("\t\t\t");
+        _builder.append("val uri = resourceBaseProvider.getFileURI(resourceId)");
+        _builder.newLine();
+        _builder.append("\t\t\t");
+        _builder.append("if (uri === null)");
+        _builder.newLine();
+        _builder.append("\t\t\t\t");
+        _builder.append("throw new ");
+        TypeReference _typeRef_5 = TypeReference.typeRef("java.io.IOException");
+        _builder.append(_typeRef_5, "\t\t\t\t");
+        _builder.append("(\'The requested resource does not exist.\')");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t\t");
+        _builder.append("val resourceSet = resourceSetProvider.get(resourceId, serviceContext)");
+        _builder.newLine();
+        _builder.append("\t\t\t");
+        _builder.append("val resource = resourceSet.getResource(uri, true) as ");
+        TypeReference _typeRef_6 = TypeReference.typeRef("org.eclipse.xtext.resource.XtextResource");
+        _builder.append(_typeRef_6, "\t\t\t");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t\t");
+        _builder.append("return documentProvider.get(resourceId, serviceContext) => [");
+        _builder.newLine();
+        _builder.append("\t\t\t\t");
+        _builder.append("setInput(resource)");
+        _builder.newLine();
+        _builder.append("\t\t\t");
+        _builder.append("]");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.append("} catch (");
+        TypeReference _typeRef_7 = TypeReference.typeRef("org.eclipse.emf.common.util.WrappedException");
+        _builder.append(_typeRef_7, "\t\t");
+        _builder.append(" exception) {");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t\t");
+        _builder.append("throw exception.cause");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.append("}");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("}");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("override put(");
+        TypeReference _typeRef_8 = TypeReference.typeRef("org.eclipse.xtext.web.server.model.IXtextWebDocument");
+        _builder.append(_typeRef_8, "\t");
+        _builder.append(" document, ");
+        TypeReference _typeRef_9 = TypeReference.typeRef("org.eclipse.xtext.web.server.IServiceContext");
+        _builder.append(_typeRef_9, "\t");
+        _builder.append(" serviceContext) throws ");
+        TypeReference _typeRef_10 = TypeReference.typeRef("java.io.IOException");
+        _builder.append(_typeRef_10, "\t");
+        _builder.append(" {");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t");
+        _builder.append("try {");
+        _builder.newLine();
+        _builder.append("\t\t\t");
+        _builder.append("val uri = resourceBaseProvider.getFileURI(document.resourceId)");
+        _builder.newLine();
+        _builder.append("\t\t\t");
+        _builder.append("val outputStream = document.resource.resourceSet.URIConverter.createOutputStream(uri)");
+        _builder.newLine();
+        _builder.append("\t\t\t");
+        _builder.append("val writer = new OutputStreamWriter(outputStream, encodingProvider.getEncoding(uri))");
+        _builder.newLine();
+        _builder.append("\t\t\t");
+        _builder.append("writer.write(document.text)");
+        _builder.newLine();
+        _builder.append("\t\t\t");
+        _builder.append("writer.close");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.append("} catch (");
+        TypeReference _typeRef_11 = TypeReference.typeRef("org.eclipse.emf.common.util.WrappedException");
+        _builder.append(_typeRef_11, "\t\t");
+        _builder.append(" exception) {");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t\t");
+        _builder.append("throw exception.cause");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.append("}");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("}");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.newLine();
+        _builder.append("}");
+        _builder.newLine();
+      }
+    };
+    return this.fileAccessFactory.createXtendFile(_peFileResourceHandler, _client);
+  }
+  
+  public JavaFileAccess createPeResourceBaseProvider(final IXtextGeneratorLanguage langConfig) {
+    final Grammar it = langConfig.getGrammar();
+    final String t = "";
+    final TypeReference URITypeRef = TypeReference.typeRef("org.eclipse.emf.common.util.URI");
+    final TypeReference FileTypeRef = TypeReference.typeRef("java.io.File");
+    TypeReference _peResourceBaseProvider = this.naming.getPeResourceBaseProvider(it);
+    StringConcatenationClient _client = new StringConcatenationClient() {
+      @Override
+      protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+        _builder.append("class ");
+        TypeReference _peResourceBaseProvider = XtextGeneratorTemplates.this.naming.getPeResourceBaseProvider(it);
+        _builder.append(_peResourceBaseProvider);
+        _builder.append(" implements ");
+        _builder.append(XtextGeneratorTemplates.this.IResourceBaseProviderTypeRef);
+        _builder.append("{ ");
+        _builder.newLineIfNotEmpty();
+        _builder.append("  ");
+        _builder.newLine();
+        _builder.append("  ");
+        _builder.append("public override ");
+        _builder.append(URITypeRef, "  ");
+        _builder.append(" getFileURI(String resourceId) { ");
+        _builder.newLineIfNotEmpty();
+        _builder.append("    ");
+        _builder.append("return ");
+        _builder.append(URITypeRef, "    ");
+        _builder.append(".createFileURI(((\"user-files\" + ");
+        _builder.append(FileTypeRef, "    ");
+        _builder.append(".separator) + resourceId)); ");
+        _builder.newLineIfNotEmpty();
+        _builder.append("  ");
+        _builder.append("} ");
+        _builder.newLine();
+        _builder.append("}");
+        _builder.newLine();
+      }
+    };
+    return this.fileAccessFactory.createXtendFile(_peResourceBaseProvider, _client);
   }
   
   public JavaFileAccess createEclipsePluginExecutableExtensionFactory(final IXtextGeneratorLanguage langConfig, final IXtextGeneratorLanguage activatorLanguage) {
