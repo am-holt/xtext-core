@@ -1923,8 +1923,11 @@ public class XtextGeneratorTemplates {
         _builder.append("val outputStream = document.resource.resourceSet.URIConverter.createOutputStream(uri)");
         _builder.newLine();
         _builder.append("\t\t\t");
-        _builder.append("val writer = new OutputStreamWriter(outputStream, encodingProvider.getEncoding(uri))");
-        _builder.newLine();
+        _builder.append("val writer = new ");
+        TypeReference _typeRef_11 = TypeReference.typeRef("java.io.OutputStreamWriter");
+        _builder.append(_typeRef_11, "\t\t\t");
+        _builder.append("(outputStream, encodingProvider.getEncoding(uri))");
+        _builder.newLineIfNotEmpty();
         _builder.append("\t\t\t");
         _builder.append("writer.write(document.text)");
         _builder.newLine();
@@ -1933,8 +1936,8 @@ public class XtextGeneratorTemplates {
         _builder.newLine();
         _builder.append("\t\t");
         _builder.append("} catch (");
-        TypeReference _typeRef_11 = TypeReference.typeRef("org.eclipse.emf.common.util.WrappedException");
-        _builder.append(_typeRef_11, "\t\t");
+        TypeReference _typeRef_12 = TypeReference.typeRef("org.eclipse.emf.common.util.WrappedException");
+        _builder.append(_typeRef_12, "\t\t");
         _builder.append(" exception) {");
         _builder.newLineIfNotEmpty();
         _builder.append("\t\t\t");

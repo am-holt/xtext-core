@@ -277,6 +277,7 @@ class PeWebIntegrationFragment  extends AbstractXtextGeneratorFragment {
 	}
 	
 	protected def void generateServlet() {
+		val injector = 'com.google.inject.Injector'.typeRef;
 		fileAccessFactory.createXtendFile(grammar.servletClass, '''
 			/**
 			 * Deploy this class into a servlet container to enable DSL-specific services.
@@ -288,10 +289,19 @@ class PeWebIntegrationFragment  extends AbstractXtextGeneratorFragment {
 				
 				«DisposableRegistry» disposableRegistry
 				
+				«injector» injector
+				
+				override getInjector() {
+					if(injector == null){
+						injector =	new «grammar.peWebSetup»().createInjectorAndDoEMFRegistration()	
+					}else{
+						return injector
+					}	
+				}
+				
 				override init() {
 					super.init()
-					val injector = new «grammar.peWebSetup»().createInjectorAndDoEMFRegistration()
-					disposableRegistry = injector.getInstance(«DisposableRegistry»)
+					disposableRegistry = getInjector().getInstance(«DisposableRegistry»)
 				}
 				
 				override destroy() {

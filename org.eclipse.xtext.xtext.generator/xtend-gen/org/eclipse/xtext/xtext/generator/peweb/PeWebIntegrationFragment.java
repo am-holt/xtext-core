@@ -429,6 +429,7 @@ public class PeWebIntegrationFragment extends AbstractXtextGeneratorFragment {
   }
   
   protected void generateServlet() {
+    final TypeReference injector = TypeReference.typeRef("com.google.inject.Injector");
     TypeReference _servletClass = this.getServletClass(this.getGrammar());
     StringConcatenationClient _client = new StringConcatenationClient() {
       @Override
@@ -467,19 +468,45 @@ public class PeWebIntegrationFragment extends AbstractXtextGeneratorFragment {
         _builder.append("\t");
         _builder.newLine();
         _builder.append("\t");
+        _builder.append(injector, "\t");
+        _builder.append(" injector");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("override getInjector() {");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.append("if(injector == null){");
+        _builder.newLine();
+        _builder.append("\t\t\t");
+        _builder.append("injector =\tnew ");
+        TypeReference _peWebSetup = PeWebIntegrationFragment.this._xtextGeneratorNaming.getPeWebSetup(PeWebIntegrationFragment.this.getGrammar());
+        _builder.append(_peWebSetup, "\t\t\t");
+        _builder.append("().createInjectorAndDoEMFRegistration()\t");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t");
+        _builder.append("}else{");
+        _builder.newLine();
+        _builder.append("\t\t\t");
+        _builder.append("return injector");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.append("}\t");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("}");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.newLine();
+        _builder.append("\t");
         _builder.append("override init() {");
         _builder.newLine();
         _builder.append("\t\t");
         _builder.append("super.init()");
         _builder.newLine();
         _builder.append("\t\t");
-        _builder.append("val injector = new ");
-        TypeReference _peWebSetup = PeWebIntegrationFragment.this._xtextGeneratorNaming.getPeWebSetup(PeWebIntegrationFragment.this.getGrammar());
-        _builder.append(_peWebSetup, "\t\t");
-        _builder.append("().createInjectorAndDoEMFRegistration()");
-        _builder.newLineIfNotEmpty();
-        _builder.append("\t\t");
-        _builder.append("disposableRegistry = injector.getInstance(");
+        _builder.append("disposableRegistry = getInjector().getInstance(");
         _builder.append(DisposableRegistry.class, "\t\t");
         _builder.append(")");
         _builder.newLineIfNotEmpty();

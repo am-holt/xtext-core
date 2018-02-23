@@ -631,7 +631,7 @@ class XtextGeneratorTemplates {
 					try {
 						val uri = resourceBaseProvider.getFileURI(document.resourceId)
 						val outputStream = document.resource.resourceSet.URIConverter.createOutputStream(uri)
-						val writer = new OutputStreamWriter(outputStream, encodingProvider.getEncoding(uri))
+						val writer = new «'java.io.OutputStreamWriter'.typeRef»(outputStream, encodingProvider.getEncoding(uri))
 						writer.write(document.text)
 						writer.close
 					} catch («'org.eclipse.emf.common.util.WrappedException'.typeRef» exception) {
