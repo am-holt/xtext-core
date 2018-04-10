@@ -218,9 +218,10 @@ class PeWebIntegrationFragment  extends AbstractXtextGeneratorFragment {
 	override generate() {
 
 		val langId = language.fileExtensions.head
-		
+
 		if (generateServlet.get && projectConfig.peWeb.src !== null) {
 			generateServlet()
+			generateEditorFile();
 		}
 		if (generateJettyLauncher.get && projectConfig.peWeb.src !== null) {
 			generateServerLauncher()
@@ -229,7 +230,6 @@ class PeWebIntegrationFragment  extends AbstractXtextGeneratorFragment {
 			generateWebXml()
 		}
 	}
-	
 	
 	protected def void generateServerLauncher() {
 		fileAccessFactory.createXtendFile(grammar.serverLauncherClass, '''
@@ -277,7 +277,9 @@ class PeWebIntegrationFragment  extends AbstractXtextGeneratorFragment {
 	}
 	
 	protected def void generateServlet() {
-		val injector = 'com.google.inject.Injector'.typeRef;
+		val injectorTypeRef = 'com.google.inject.Injector'.typeRef;
+		val viewRetrieverTypeRef = 'org.eclipse.xtext.peweb.customview.ViewRetriever'.typeRef;
+		val viewSpecificationTypeRef = 'org.eclipse.xtext.peweb.editorgen.ViewSpecification'.typeRef
 		fileAccessFactory.createXtendFile(grammar.servletClass, '''
 			/**
 			 * Deploy this class into a servlet container to enable DSL-specific services.
@@ -289,14 +291,25 @@ class PeWebIntegrationFragment  extends AbstractXtextGeneratorFragment {
 				
 				«DisposableRegistry» disposableRegistry
 				
-				«injector» injector
+				«injectorTypeRef» injector
+				
+				«viewRetrieverTypeRef» viewRetriever
 				
 				override getInjector() {
-					if(injector == null){
+					if(injector === null){
 						injector =	new «grammar.peWebSetup»().createInjectorAndDoEMFRegistration()	
 					}else{
 						return injector
 					}	
+				}
+				
+				override getViewRetriever() {
+					if(viewRetriever === null){
+						viewRetriever =	new ViewRetriever();
+						viewRetriever.nodeMap = «viewSpecificationTypeRef».getNodeMap();
+						viewRetriever.componentMap = «viewSpecificationTypeRef».getComponentMap();
+					}
+					return viewRetriever	
 				}
 				
 				override init() {
@@ -314,6 +327,20 @@ class PeWebIntegrationFragment  extends AbstractXtextGeneratorFragment {
 				
 			}
 		''').writeTo(projectConfig.peWeb.src)
+	}
+	
+	protected def void generateEditorFile() {
+		if (projectConfig.peWeb.src.isFile('Projections.editor')) {
+			// Don't overwrite an existing style sheet
+			return
+		}
+		val editorFile = fileAccessFactory.createTextFile
+		editorFile.path = 'Projections.editor'
+		
+		editorFile.content = '''
+			//Define your editor's view in this file!
+							'''
+		editorFile.writeTo(projectConfig.peWeb.src);
 	}
 	
 	protected def void generateWebXml() {

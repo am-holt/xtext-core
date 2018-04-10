@@ -25,6 +25,7 @@ import org.eclipse.xtext.xtext.generator.CodeConfig;
 import org.eclipse.xtext.xtext.generator.Issues;
 import org.eclipse.xtext.xtext.generator.XtextGeneratorNaming;
 import org.eclipse.xtext.xtext.generator.model.FileAccessFactory;
+import org.eclipse.xtext.xtext.generator.model.TextFileAccess;
 import org.eclipse.xtext.xtext.generator.model.TypeReference;
 import org.eclipse.xtext.xtext.generator.util.BooleanGeneratorOption;
 import org.eclipse.xtext.xtext.generator.util.GeneratorOption;
@@ -251,6 +252,7 @@ public class PeWebIntegrationFragment extends AbstractXtextGeneratorFragment {
     final String langId = IterableExtensions.<String>head(this.getLanguage().getFileExtensions());
     if ((this.generateServlet.get() && (this.getProjectConfig().getPeWeb().getSrc() != null))) {
       this.generateServlet();
+      this.generateEditorFile();
     }
     if ((this.generateJettyLauncher.get() && (this.getProjectConfig().getPeWeb().getSrc() != null))) {
       this.generateServerLauncher();
@@ -429,7 +431,9 @@ public class PeWebIntegrationFragment extends AbstractXtextGeneratorFragment {
   }
   
   protected void generateServlet() {
-    final TypeReference injector = TypeReference.typeRef("com.google.inject.Injector");
+    final TypeReference injectorTypeRef = TypeReference.typeRef("com.google.inject.Injector");
+    final TypeReference viewRetrieverTypeRef = TypeReference.typeRef("org.eclipse.xtext.peweb.customview.ViewRetriever");
+    final TypeReference viewSpecificationTypeRef = TypeReference.typeRef("org.eclipse.xtext.peweb.editorgen.ViewSpecification");
     TypeReference _servletClass = this.getServletClass(this.getGrammar());
     StringConcatenationClient _client = new StringConcatenationClient() {
       @Override
@@ -468,8 +472,14 @@ public class PeWebIntegrationFragment extends AbstractXtextGeneratorFragment {
         _builder.append("\t");
         _builder.newLine();
         _builder.append("\t");
-        _builder.append(injector, "\t");
+        _builder.append(injectorTypeRef, "\t");
         _builder.append(" injector");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append(viewRetrieverTypeRef, "\t");
+        _builder.append(" viewRetriever");
         _builder.newLineIfNotEmpty();
         _builder.append("\t");
         _builder.newLine();
@@ -477,7 +487,7 @@ public class PeWebIntegrationFragment extends AbstractXtextGeneratorFragment {
         _builder.append("override getInjector() {");
         _builder.newLine();
         _builder.append("\t\t");
-        _builder.append("if(injector == null){");
+        _builder.append("if(injector === null){");
         _builder.newLine();
         _builder.append("\t\t\t");
         _builder.append("injector =\tnew ");
@@ -493,6 +503,36 @@ public class PeWebIntegrationFragment extends AbstractXtextGeneratorFragment {
         _builder.newLine();
         _builder.append("\t\t");
         _builder.append("}\t");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("}");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("override getViewRetriever() {");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.append("if(viewRetriever === null){");
+        _builder.newLine();
+        _builder.append("\t\t\t");
+        _builder.append("viewRetriever =\tnew ViewRetriever();");
+        _builder.newLine();
+        _builder.append("\t\t\t");
+        _builder.append("viewRetriever.nodeMap = ");
+        _builder.append(viewSpecificationTypeRef, "\t\t\t");
+        _builder.append(".getNodeMap();");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t\t");
+        _builder.append("viewRetriever.componentMap = ");
+        _builder.append(viewSpecificationTypeRef, "\t\t\t");
+        _builder.append(".getComponentMap();");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t");
+        _builder.append("}");
+        _builder.newLine();
+        _builder.append("\t\t");
+        _builder.append("return viewRetriever\t");
         _builder.newLine();
         _builder.append("\t");
         _builder.append("}");
@@ -543,6 +583,24 @@ public class PeWebIntegrationFragment extends AbstractXtextGeneratorFragment {
       }
     };
     this.fileAccessFactory.createXtendFile(_servletClass, _client).writeTo(this.getProjectConfig().getPeWeb().getSrc());
+  }
+  
+  protected void generateEditorFile() {
+    boolean _isFile = this.getProjectConfig().getPeWeb().getSrc().isFile("Projections.editor");
+    if (_isFile) {
+      return;
+    }
+    final TextFileAccess editorFile = this.fileAccessFactory.createTextFile();
+    editorFile.setPath("Projections.editor");
+    StringConcatenationClient _client = new StringConcatenationClient() {
+      @Override
+      protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+        _builder.append("//Define your editor\'s view in this file!");
+        _builder.newLine();
+      }
+    };
+    editorFile.setContent(_client);
+    editorFile.writeTo(this.getProjectConfig().getPeWeb().getSrc());
   }
   
   protected void generateWebXml() {
