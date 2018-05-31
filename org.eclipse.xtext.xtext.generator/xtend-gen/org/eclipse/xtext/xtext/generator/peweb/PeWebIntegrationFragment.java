@@ -432,7 +432,7 @@ public class PeWebIntegrationFragment extends AbstractXtextGeneratorFragment {
   
   protected void generateServlet() {
     final TypeReference injectorTypeRef = TypeReference.typeRef("com.google.inject.Injector");
-    final TypeReference viewRetrieverTypeRef = TypeReference.typeRef("org.eclipse.xtext.peweb.customview.ViewRetriever");
+    final TypeReference viewRetrieverTypeRef = TypeReference.typeRef("org.eclipse.xtext.peweb.customview.IViewRetriever");
     final TypeReference viewSpecificationTypeRef = TypeReference.typeRef("org.eclipse.xtext.peweb.editorgen.ViewSpecification");
     TypeReference _servletClass = this.getServletClass(this.getGrammar());
     StringConcatenationClient _client = new StringConcatenationClient() {

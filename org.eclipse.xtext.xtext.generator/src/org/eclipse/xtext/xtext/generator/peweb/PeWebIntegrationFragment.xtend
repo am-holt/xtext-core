@@ -278,7 +278,7 @@ class PeWebIntegrationFragment  extends AbstractXtextGeneratorFragment {
 	
 	protected def void generateServlet() {
 		val injectorTypeRef = 'com.google.inject.Injector'.typeRef;
-		val viewRetrieverTypeRef = 'org.eclipse.xtext.peweb.customview.ViewRetriever'.typeRef;
+		val viewRetrieverTypeRef = 'org.eclipse.xtext.peweb.customview.IViewRetriever'.typeRef;
 		val viewSpecificationTypeRef = 'org.eclipse.xtext.peweb.editorgen.ViewSpecification'.typeRef
 		fileAccessFactory.createXtendFile(grammar.servletClass, '''
 			/**
